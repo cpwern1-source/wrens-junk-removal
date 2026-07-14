@@ -1,0 +1,33 @@
+import { Section, SectionHeading } from "@/components/ui/Section";
+import { faqs } from "@/lib/content";
+import { JsonLd } from "@/lib/seo";
+
+export function FAQ() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  return (
+    <Section id="faq" className="bg-cream-dark">
+      <JsonLd data={schema} />
+      <SectionHeading eyebrow="Good to Know" title="Frequently Asked Questions" />
+      <div className="mx-auto max-w-3xl divide-y divide-slate/20 overflow-hidden rounded-2xl bg-white shadow-card">
+        {faqs.map((f) => (
+          <details key={f.q} className="group px-6 py-5">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-ink">
+              {f.q}
+              <span className="text-sand transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <p className="mt-3 text-sm leading-relaxed text-ink-soft">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </Section>
+  );
+}
