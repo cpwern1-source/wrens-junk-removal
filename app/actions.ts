@@ -1,7 +1,7 @@
 "use server";
 
 import { put } from "@vercel/blob";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { z } from "zod";
 import { business } from "@/lib/brand";
 
@@ -80,29 +80,36 @@ async function notifyLead(lead: Lead) {
   const subject = `🗑️ New Quote Request — ${lead.name} (${lead.location})`;
   const html = leadEmailHtml(lead);
 
-  // --- EMAIL (Resend) ---
-  const apiKey = process.env.RESEND_API_KEY;
+  // --- EMAIL (Gmail via SMTP + App Password) ---
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
   const to = process.env.LEAD_EMAIL || business.email;
 
-  if (!apiKey) {
-    // Template not yet configured — log so the funnel still works end-to-end in dev.
+  if (!gmailUser || !gmailAppPassword) {
+    // Not yet configured — log so the funnel still works end-to-end in dev.
     console.warn(
-      "[notifyLead] RESEND_API_KEY not set. Lead captured but NOT emailed:\n",
+      "[notifyLead] GMAIL_USER / GMAIL_APP_PASSWORD not set. Lead captured but NOT emailed:\n",
       JSON.stringify(lead, null, 2)
     );
     return;
   }
 
-  const resend = new Resend(apiKey);
-  const { error } = await resend.emails.send({
-    // TODO: SWAP — once the domain is verified in Resend, use e.g. "Wren's Quotes <quotes@wrensjunkremoval.com>"
-    from: process.env.LEAD_FROM || "Wren's Quotes <onboarding@resend.dev>",
+  // Gmail sends as the authenticated account; a display name is fine, but the
+  // address is always rewritten to gmailUser, so default the From to it.
+  const from = process.env.LEAD_FROM || `Wren's Quotes <${gmailUser}>`;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: gmailUser, pass: gmailAppPassword },
+  });
+
+  await transporter.sendMail({
+    from,
     to,
     replyTo: lead.email || undefined,
     subject,
     html,
   });
-  if (error) throw new Error(error.message);
 
   // --- SMS seam (later) ---
   // await sendSms(business.phoneHref, `New quote from ${lead.name} in ${lead.location}. Check email.`);
