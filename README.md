@@ -26,7 +26,7 @@ Everything you need to personalize is marked in code with `TODO: SWAP`. The big 
 | What | Where |
 |------|-------|
 | **Phone & email** | `lib/brand.ts` — single source of truth, updates the whole site |
-| **Lead email + Resend key** | `.env.local` (see `.env.local.example`) |
+| **Lead email + Gmail App Password** | `.env.local` (see `.env.local.example`) |
 | **Wren's About bio** | `app/about/page.tsx` (look for `[Add Wren's real story here.]`) |
 | **Photos** (hero, about, etc.) | Dashed "📷" boxes on the site = `<PhotoSlot>` placeholders. Hero uses `public/truck.webp` |
 | **Real testimonials** | `lib/content.ts` → `testimonials` |
@@ -41,9 +41,12 @@ To replace the logo, overwrite `public/logo.jpg`. To replace the hero image, ove
 
 ## 📨 Lead delivery (email now, SMS later)
 
-1. Sign up free at [resend.com](https://resend.com), create an API key.
-2. Put it in `.env.local` as `RESEND_API_KEY`, set `LEAD_EMAIL` to Wren's Gmail.
-3. To send from a branded address, verify your domain in Resend and update `LEAD_FROM` in `.env.local`.
+Leads are emailed from Wren's Gmail using an **App Password** (no third-party service).
+
+1. Turn on 2-Step Verification: [myaccount.google.com/security](https://myaccount.google.com/security).
+2. Create a 16-character App Password: [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords).
+3. In `.env.local`, set `GMAIL_USER` (the sending Gmail), `GMAIL_APP_PASSWORD` (the 16 chars), and
+   `LEAD_EMAIL` (where leads land — usually the same Gmail). `LEAD_FROM` sets the inbox display name.
 
 **Photos** are uploaded to **Vercel Blob**. Create a Blob store in the Vercel dashboard
 (Storage → Blob) — `BLOB_READ_WRITE_TOKEN` is added automatically. Without it, leads still send,
@@ -62,7 +65,7 @@ npx vercel --prod     # production
 ```
 
 Then in the Vercel dashboard → Project → Settings → Environment Variables, add:
-`RESEND_API_KEY`, `LEAD_EMAIL`, `LEAD_FROM` (and `BLOB_READ_WRITE_TOKEN` is auto-added with a Blob store).
+`GMAIL_USER`, `GMAIL_APP_PASSWORD`, `LEAD_EMAIL`, `LEAD_FROM` (and `BLOB_READ_WRITE_TOKEN` is auto-added with a Blob store).
 
 ---
 
