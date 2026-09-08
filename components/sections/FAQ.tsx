@@ -1,12 +1,13 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { faqs } from "@/lib/content";
+import { site } from "@/site.config";
 import { JsonLd } from "@/lib/seo";
 
 export function FAQ() {
+  const { eyebrow, title, items } = site.home.faq;
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
+    mainEntity: items.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -16,9 +17,9 @@ export function FAQ() {
   return (
     <Section id="faq" className="bg-cream-dark">
       <JsonLd data={schema} />
-      <SectionHeading eyebrow="Good to Know" title="Frequently Asked Questions" />
+      <SectionHeading eyebrow={eyebrow} title={title} />
       <div className="mx-auto max-w-3xl divide-y divide-slate/20 overflow-hidden rounded-2xl bg-white shadow-card">
-        {faqs.map((f) => (
+        {items.map((f) => (
           <details key={f.q} className="group px-6 py-5">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-ink">
               {f.q}

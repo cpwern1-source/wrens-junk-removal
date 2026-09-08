@@ -1,4 +1,5 @@
 import { business } from "@/lib/brand";
+import { site } from "@/site.config";
 
 /**
  * LocalBusiness JSON-LD. Strong signal for local "junk removal near me" search.
@@ -9,7 +10,7 @@ export function localBusinessSchema(city?: string) {
     "@context": "https://schema.org",
     "@type": "HomeAndConstructionBusiness",
     name: business.name,
-    image: `${business.url}/logo.jpg`,
+    image: `${business.url}${site.seo.ogImage}`,
     "@id": business.url,
     url: business.url,
     telephone: business.phoneHref,
@@ -26,7 +27,7 @@ export function localBusinessSchema(city?: string) {
       "@type": "City",
       name: `${name}, ${business.region}`,
     })),
-    openingHours: "Mo-Sa 07:00-19:00",
+    openingHours: business.openingHoursSchema,
     sameAs: [business.facebookUrl, business.instagramUrl, business.googleBusinessUrl].filter(Boolean),
   };
 }

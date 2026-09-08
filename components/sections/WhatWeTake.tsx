@@ -1,18 +1,16 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { takeList, skipList } from "@/lib/content";
+import { site } from "@/site.config";
 
 export function WhatWeTake() {
+  const { eyebrow, title, subtitle, takeHeading, skipHeading, skipNote, takeList, skipList } =
+    site.home.whatWeTake;
   return (
     <Section className="bg-cream-dark">
-      <SectionHeading
-        eyebrow="The Short List"
-        title="What We Take"
-        subtitle="Pretty much everything that isn't hazardous. If you're not sure, just ask in your quote."
-      />
+      <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} />
       <div className="grid gap-6 md:grid-cols-3">
         <div className="rounded-2xl bg-white p-7 shadow-card md:col-span-2">
           <h3 className="font-display text-lg font-semibold uppercase tracking-wide text-forest">
-            ✅ We Take
+            {takeHeading}
           </h3>
           <ul className="mt-4 grid gap-x-6 gap-y-2 text-sm text-ink-soft sm:grid-cols-2">
             {takeList.map((item) => (
@@ -25,7 +23,7 @@ export function WhatWeTake() {
         </div>
         <div className="rounded-2xl border border-slate/30 bg-white/60 p-7">
           <h3 className="font-display text-lg font-semibold uppercase tracking-wide text-ink-soft">
-            🚫 We Can't Take
+            {skipHeading}
           </h3>
           <ul className="mt-4 space-y-2 text-sm text-ink-soft">
             {skipList.map((item) => (
@@ -35,7 +33,7 @@ export function WhatWeTake() {
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-xs text-slate">Hazardous materials require a specialized hauler.</p>
+          <p className="mt-4 text-xs text-slate">{skipNote}</p>
         </div>
       </div>
     </Section>

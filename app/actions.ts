@@ -4,6 +4,7 @@ import { put } from "@vercel/blob";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 import { business } from "@/lib/brand";
+import { site } from "@/site.config";
 
 const leadSchema = z.object({
   items: z.string().min(1),
@@ -60,7 +61,7 @@ export async function submitQuote(
 
   const lead: Lead = { ...parsed.data, photoUrls };
 
-  // 3) Notify Chase (email now; SMS seam for later)
+  // 3) Notify the owner (email now; SMS seam for later)
   try {
     await notifyLead(lead);
   } catch (err) {
@@ -77,7 +78,7 @@ export async function submitQuote(
  *    no other code changes needed.
  */
 async function notifyLead(lead: Lead) {
-  const subject = `🗑️ New Quote Request — ${lead.name} (${lead.location})`;
+  const subject = `📩 New Quote Request — ${lead.name} (${lead.location})`;
   const html = leadEmailHtml(lead);
 
   // --- EMAIL (Gmail via SMTP + App Password) ---
@@ -96,7 +97,7 @@ async function notifyLead(lead: Lead) {
 
   // Gmail sends as the authenticated account; a display name is fine, but the
   // address is always rewritten to gmailUser, so default the From to it.
-  const from = process.env.LEAD_FROM || `Wren's Quotes <${gmailUser}>`;
+  const from = process.env.LEAD_FROM || `${business.shortName} Quotes <${gmailUser}>`;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -116,23 +117,24 @@ async function notifyLead(lead: Lead) {
 }
 
 function leadEmailHtml(lead: Lead): string {
+  const c = site.theme.colors;
   const row = (label: string, value: string) =>
-    `<tr><td style="padding:6px 12px;color:#41505b;font-weight:600;white-space:nowrap;vertical-align:top">${label}</td><td style="padding:6px 12px;color:#1e2a33">${value}</td></tr>`;
+    `<tr><td style="padding:6px 12px;color:${c.inkSoft};font-weight:600;white-space:nowrap;vertical-align:top">${label}</td><td style="padding:6px 12px;color:${c.ink}">${value}</td></tr>`;
 
   const photos = lead.photoUrls.length
-    ? `<p style="margin:16px 12px 0;font-weight:600;color:#41505b">Photos:</p>` +
+    ? `<p style="margin:16px 12px 0;font-weight:600;color:${c.inkSoft}">Photos:</p>` +
       lead.photoUrls
         .map(
           (u) =>
             `<a href="${u}" style="display:inline-block;margin:8px 4px"><img src="${u}" alt="job photo" width="140" style="border-radius:8px;border:1px solid #ddd"/></a>`
         )
         .join("")
-    : `<p style="margin:16px 12px 0;color:#8fa0ad">No photos attached.</p>`;
+    : `<p style="margin:16px 12px 0;color:${c.muted}">No photos attached.</p>`;
 
   return `
-  <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:#f5f1e6;padding:24px;border-radius:12px">
-    <h2 style="color:#2f4a33;margin:0 0 4px">New Junk Removal Quote Request</h2>
-    <p style="color:#41505b;margin:0 0 16px">From the website quiz funnel</p>
+  <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:${c.base};padding:24px;border-radius:12px">
+    <h2 style="color:${c.primary};margin:0 0 4px">New ${business.serviceNoun} Quote Request</h2>
+    <p style="color:${c.inkSoft};margin:0 0 16px">From the ${business.name} website quiz funnel</p>
     <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">
       ${row("Name", lead.name)}
       ${row("Phone", `<a href="tel:${lead.phone}">${lead.phone}</a>`)}

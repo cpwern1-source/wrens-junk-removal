@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { business } from "@/lib/brand";
+import { business, fill } from "@/lib/brand";
 import { cities, getCity } from "@/lib/cities";
-import { services } from "@/lib/content";
+import { site } from "@/site.config";
 import { Section, SectionHeading, Container } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
 import { JsonLd, localBusinessSchema } from "@/lib/seo";
+
+const services = site.home.services.items;
+const cp = site.cityPage;
 
 export function generateStaticParams() {
   return cities.map((c) => ({ city: c.slug }));
@@ -20,8 +23,8 @@ export async function generateMetadata({
   const city = getCity(slug);
   if (!city) return {};
   return {
-    title: `Junk Removal in ${city.name}, MT`,
-    description: `${business.name} — fast, friendly junk removal & hauling in ${city.name}, Montana. ${business.tagline} Get a free quote today.`,
+    title: `${business.serviceNoun} in ${city.name}, ${business.region}`,
+    description: `${business.name} — fast, friendly ${business.serviceNoun.toLowerCase()} & hauling in ${city.name}, ${business.region}. ${business.tagline} Get a free quote today.`,
     alternates: { canonical: `/${city.slug}` },
   };
 }
@@ -31,6 +34,12 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const city = getCity(slug);
   if (!city) notFound();
 
+  const t = (s: string) => fill(s, { city: city.name });
+  const neighborhoodLine =
+    city.neighborhoods.length > 1
+      ? `${city.neighborhoods.slice(0, -1).join(", ")} and ${city.neighborhoods.slice(-1)}`
+      : city.neighborhoods.join("");
+
   return (
     <>
       <JsonLd data={localBusinessSchema(city.name)} />
@@ -39,10 +48,10 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       <section className="bg-forest text-cream">
         <Container className="py-16 sm:py-20">
           <p className="mb-3 font-display text-sm font-semibold uppercase tracking-widest text-sand">
-            📍 {city.name}, Montana
+            📍 {city.name}, {business.region}
           </p>
           <h1 className="heading-xl max-w-3xl text-4xl sm:text-5xl lg:text-6xl">
-            Junk Removal in {city.name}
+            {business.serviceNoun} in {city.name}
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-cream/85">{city.intro}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -50,7 +59,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               Get a Free Quote →
             </LinkButton>
             <LinkButton href={`tel:${business.phoneHref}`} variant="outline" size="lg">
-              Call {business.phone}
+              {cp.heroCtaCall} {business.phone}
             </LinkButton>
           </div>
         </Container>
@@ -59,9 +68,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Services recap */}
       <Section className="bg-cream">
         <SectionHeading
-          eyebrow={`What We Haul in ${city.name}`}
-          title="Full-Service Junk Removal"
-          subtitle="No job too big or too small — homeowners, landlords, and businesses alike."
+          eyebrow={t(cp.servicesEyebrow)}
+          title={cp.servicesTitle}
+          subtitle={cp.servicesSubtitle}
         />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
@@ -80,11 +89,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       <Section className="bg-cream-dark">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div>
-            <SectionHeading align="left" eyebrow="Proudly Local" title={`Serving All of ${city.name}`} />
+            <SectionHeading align="left" eyebrow={cp.localEyebrow} title={t(cp.localTitle)} />
             <p className="text-ink-soft">
-              We cover {city.name} and the surrounding area, including{" "}
-              {city.neighborhoods.slice(0, -1).join(", ")} and {city.neighborhoods.slice(-1)}.
-              Wherever you are, {business.owner} will get your junk hauled away fast.
+              {t(cp.localBody)} We cover {neighborhoodLine}, and everywhere in between.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -103,9 +110,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* CTA */}
       <section className="bg-sand">
         <Container className="flex flex-col items-center gap-6 py-14 text-center">
-          <h2 className="heading-xl text-3xl text-ink sm:text-4xl">
-            {city.name} — Let&apos;s Clear It Out
-          </h2>
+          <h2 className="heading-xl text-3xl text-ink sm:text-4xl">{t(cp.ctaTitle)}</h2>
           <LinkButton href="/quote" variant="secondary" size="lg">
             Get My Free Quote →
           </LinkButton>

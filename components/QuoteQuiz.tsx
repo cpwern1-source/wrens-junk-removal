@@ -10,6 +10,7 @@ import {
   timingOptions,
   contactMethods,
   TOTAL_STEPS,
+  quizCopy as q,
 } from "@/lib/quiz";
 import { submitQuote } from "@/app/actions";
 import { ProgressBar } from "@/components/quiz/ProgressBar";
@@ -124,7 +125,7 @@ export function QuoteQuiz() {
 
       {/* STEP 0 — Items */}
       {step === 0 && (
-        <StepShell title="What are you getting rid of?" subtitle="Pick all that apply.">
+        <StepShell title={q.itemsTitle} subtitle={q.itemsSubtitle}>
           <div className="flex flex-wrap gap-3">
             {itemOptions.map((opt) => (
               <Chip key={opt} label={opt} selected={items.includes(opt)} onClick={() => toggle(items, setItems, opt)} />
@@ -135,7 +136,7 @@ export function QuoteQuiz() {
 
       {/* STEP 1 — Volume */}
       {step === 1 && (
-        <StepShell title="Roughly how much?" subtitle="A rough idea is plenty — photos help us nail it.">
+        <StepShell title={q.volumeTitle} subtitle={q.volumeSubtitle}>
           <div className="space-y-3">
             {volumeOptions.map((opt) => (
               <OptionCard
@@ -153,7 +154,7 @@ export function QuoteQuiz() {
 
       {/* STEP 2 — Location */}
       {step === 2 && (
-        <StepShell title="Where's the job?" subtitle="So we know we can get to you.">
+        <StepShell title={q.locationTitle} subtitle={q.locationSubtitle}>
           <div className="grid gap-3 sm:grid-cols-2">
             {locationOptions.map((opt) => (
               <OptionCard key={opt} label={opt} selected={location === opt} onClick={() => setLocation(opt)} />
@@ -164,7 +165,7 @@ export function QuoteQuiz() {
 
       {/* STEP 3 — Access */}
       {step === 3 && (
-        <StepShell title="How's the access?" subtitle="Optional — helps us bring the right gear. Pick any that apply.">
+        <StepShell title={q.accessTitle} subtitle={q.accessSubtitle}>
           <div className="flex flex-wrap gap-3">
             {accessOptions.map((opt) => (
               <Chip key={opt} label={opt} selected={access.includes(opt)} onClick={() => toggle(access, setAccess, opt)} />
@@ -175,7 +176,7 @@ export function QuoteQuiz() {
 
       {/* STEP 4 — Timing */}
       {step === 4 && (
-        <StepShell title="When do you need it gone?" subtitle="We'll do our best to work around you.">
+        <StepShell title={q.timingTitle} subtitle={q.timingSubtitle}>
           <div className="space-y-3">
             {timingOptions.map((opt) => (
               <OptionCard
@@ -192,14 +193,11 @@ export function QuoteQuiz() {
 
       {/* STEP 5 — Photos */}
       {step === 5 && (
-        <StepShell
-          title="Add a photo or two"
-          subtitle="Optional, but it's the fastest way to an accurate quote. Snap a pic of the pile."
-        >
+        <StepShell title={q.photosTitle} subtitle={q.photosSubtitle}>
           <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate/50 bg-cream-dark/40 px-6 py-10 text-center transition-colors hover:border-forest/50">
             <span className="text-3xl">📷</span>
             <span className="font-display font-semibold uppercase tracking-wide text-ink">
-              Tap to add photos
+              {q.photosCta}
             </span>
             <span className="text-xs text-slate">Up to {MAX_PHOTOS} images</span>
             <input
@@ -237,7 +235,7 @@ export function QuoteQuiz() {
 
       {/* STEP 6 — Contact */}
       {step === 6 && (
-        <StepShell title="Where do we send your quote?" subtitle="We'll get back to you fast — usually within a few hours.">
+        <StepShell title={q.contactTitle} subtitle={q.contactSubtitle}>
           <div className="space-y-4">
             <Field label="Name" value={name} onChange={setName} placeholder="Your name" autoComplete="name" />
             <Field
@@ -258,7 +256,7 @@ export function QuoteQuiz() {
             />
             <div>
               <span className="mb-2 block font-display text-sm font-semibold uppercase tracking-wide text-ink-soft">
-                Best way to reach you
+                {q.contactMethodLabel}
               </span>
               <div className="flex flex-wrap gap-3">
                 {contactMethods.map((m) => (
@@ -290,11 +288,11 @@ export function QuoteQuiz() {
 
         {step < TOTAL_STEPS - 1 ? (
           <Button onClick={next} disabled={!canAdvance()} variant="primary" size="lg">
-            Continue →
+            {q.continueLabel}
           </Button>
         ) : (
           <Button onClick={handleSubmit} disabled={!canAdvance() || submitting} variant="primary" size="lg">
-            {submitting ? "Sending…" : "Get My Quote →"}
+            {submitting ? q.submittingLabel : q.submitLabel}
           </Button>
         )}
       </div>

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+// FONTS: the one thing not driven by site.config.ts — Next.js needs fonts
+// declared statically. To rebrand typography, swap these two imports (and the
+// names in site.config.ts → theme.fonts, which is documentation only).
 import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import { business } from "@/lib/brand";
+import { site } from "@/site.config";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StickyCallBar } from "@/components/StickyCallBar";
@@ -15,25 +19,18 @@ const oswald = Oswald({
   display: "swap",
 });
 
+const titleDefault = `${business.name} | ${site.seo.titleTagline}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(business.url),
   title: {
-    default: `${business.name} | Junk Removal in Bozeman, Belgrade & Big Sky`,
+    default: titleDefault,
     template: `%s | ${business.name}`,
   },
   description: business.description,
-  keywords: [
-    "junk removal Bozeman",
-    "junk removal Belgrade MT",
-    "junk removal Big Sky",
-    "junk hauling Bozeman",
-    "furniture removal",
-    "appliance removal",
-    "estate cleanout Bozeman",
-    "construction debris removal",
-  ],
+  keywords: [...site.seo.keywords],
   openGraph: {
-    title: `${business.name} | Junk Removal in Bozeman, Belgrade & Big Sky`,
+    title: titleDefault,
     description: business.description,
     url: business.url,
     siteName: business.name,
@@ -41,9 +38,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/brand/wrens-logo.webp",
-        width: 1264,
-        height: 848,
+        url: site.seo.ogImage,
+        width: site.assets.logoWidth,
+        height: site.assets.logoHeight,
         alt: `${business.name} logo`,
       },
     ],
@@ -51,13 +48,29 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// Brand palette → CSS custom properties. globals.css maps these onto the
+// design's color slots, so changing site.config.ts colors restyles the site.
+const c = site.theme.colors;
+const themeVars: React.CSSProperties = {
+  "--brand-primary": c.primary,
+  "--brand-primary-dark": c.primaryDark,
+  "--brand-primary-light": c.primaryLight,
+  "--brand-base": c.base,
+  "--brand-base-dark": c.baseDark,
+  "--brand-ink": c.ink,
+  "--brand-ink-soft": c.inkSoft,
+  "--brand-accent": c.accent,
+  "--brand-accent-dark": c.accentDark,
+  "--brand-muted": c.muted,
+} as React.CSSProperties;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${oswald.variable} h-full`}>
+    <html lang="en" className={`${inter.variable} ${oswald.variable} h-full`} style={themeVars}>
       <body className="flex min-h-full flex-col">
         <JsonLd data={localBusinessSchema()} />
         <Header />

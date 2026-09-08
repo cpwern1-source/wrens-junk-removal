@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { business, nav } from "@/lib/brand";
+import { site } from "@/site.config";
 import { LinkButton } from "@/components/ui/Button";
 
 export function Header() {
@@ -15,7 +16,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
           <Image
-            src="/brand/wren-mark.webp"
+            src={site.assets.mark}
             alt={`${business.name} logo`}
             width={500}
             height={500}

@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { cities } from "@/lib/cities";
+import { business } from "@/lib/brand";
+import { site } from "@/site.config";
 
 export function ServiceAreas() {
+  const { eyebrow, title, subtitle } = site.home.serviceAreas;
   return (
     <Section id="service-areas" className="bg-cream-dark">
-      <SectionHeading
-        eyebrow="Where We Work"
-        title="Serving the Gallatin Valley"
-        subtitle="Proudly local. Tap your town for junk removal details near you."
-      />
+      <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} />
       <div className="grid gap-5 sm:grid-cols-3">
-        {cities.map((city) => (
+        {site.cities.map((city) => (
           <Link
             key={city.slug}
             href={`/${city.slug}`}
@@ -23,7 +21,7 @@ export function ServiceAreas() {
             </h3>
             <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{city.blurb}</p>
             <span className="mt-4 font-display text-sm font-semibold uppercase tracking-wide text-sand-dark group-hover:text-forest">
-              Junk Removal in {city.name} →
+              {business.serviceNoun} in {city.name} →
             </span>
           </Link>
         ))}

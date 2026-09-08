@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 /*
-  Wren's Junk Removal — brand palette pulled straight from the logo + his Tacoma.
-  Edit a color here and it updates everywhere.
+  Brand palette. The color VALUES live in site.config.ts → theme.colors and are
+  injected as --brand-* variables on <html> in app/layout.tsx. The slots below
+  map those onto the design (bg-forest, text-sand, etc.). The hex after each
+  var() is only a fallback if the config var is ever missing.
+  Edit colors in site.config.ts — not here.
 */
 @theme {
-  --color-forest: #2f4a33; /* primary — "WREN'S" wordmark */
-  --color-forest-dark: #233a28; /* header / footer */
-  --color-forest-light: #3c5e42;
-  --color-cream: #f5f1e6; /* base background — the banner */
-  --color-cream-dark: #ece5d3;
-  --color-ink: #1e2a33; /* headings / body text — "JUNK REMOVAL" */
-  --color-ink-soft: #41505b;
-  --color-sand: #c7a86a; /* CTA / accent — his sand Tacoma */
-  --color-sand-dark: #b08f4f; /* button hover */
-  --color-slate: #8fa0ad; /* supporting — the mountains */
+  --color-forest: var(--brand-primary, #2f4a33); /* primary */
+  --color-forest-dark: var(--brand-primary-dark, #233a28); /* header / footer */
+  --color-forest-light: var(--brand-primary-light, #3c5e42);
+  --color-cream: var(--brand-base, #f5f1e6); /* base background */
+  --color-cream-dark: var(--brand-base-dark, #ece5d3);
+  --color-ink: var(--brand-ink, #1e2a33); /* headings / body text */
+  --color-ink-soft: var(--brand-ink-soft, #41505b);
+  --color-sand: var(--brand-accent, #c7a86a); /* CTA / accent */
+  --color-sand-dark: var(--brand-accent-dark, #b08f4f); /* button hover */
+  --color-slate: var(--brand-muted, #8fa0ad); /* supporting */
 
   --font-sans: var(--font-inter);
   --font-display: var(--font-oswald);

@@ -1,16 +1,13 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { services } from "@/lib/content";
+import { site } from "@/site.config";
 
 export function Services() {
+  const { eyebrow, title, subtitle, items } = site.home.services;
   return (
     <Section id="services" className="bg-cream">
-      <SectionHeading
-        eyebrow="What We Haul"
-        title="Full-Service Junk Removal"
-        subtitle="If it's junk and it's not hazardous, we'll take it. Here's the kind of work we do every day."
-      />
+      <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map((s) => (
+        {items.map((s) => (
           <div
             key={s.title}
             className="group rounded-2xl border border-slate/20 bg-white p-6 shadow-card transition-transform hover:-translate-y-1"

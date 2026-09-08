@@ -1,16 +1,13 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { testimonials } from "@/lib/content";
+import { site } from "@/site.config";
 
 export function Testimonials() {
+  const { eyebrow, title, subtitle, items } = site.home.testimonials;
   return (
     <Section className="bg-cream">
-      <SectionHeading
-        eyebrow="Word of Mouth"
-        title="What Neighbors Say"
-        subtitle="Real reviews go here as they roll in. (Placeholders for now.)"
-      />
+      <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} />
       <div className="grid gap-6 md:grid-cols-3">
-        {testimonials.map((t, i) => (
+        {items.map((t, i) => (
           <figure key={i} className="flex flex-col rounded-2xl border border-slate/20 bg-white p-7 shadow-card">
             <div className="text-sand" aria-hidden>
               ★★★★★
