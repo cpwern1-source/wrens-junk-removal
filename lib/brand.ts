@@ -27,8 +27,8 @@ export const business = {
   // Hours (used in schema + footer) — TODO: SWAP if different
   hours: "Mon–Sat, 7am–7pm",
 
-  // TODO: SWAP — set once the site is live
-  url: "https://wrensjunkremoval.com",
+  // TODO: SWAP — set once a custom domain is live (e.g. https://wrensjunkremoval.com)
+  url: "https://wrens-junk-removal-delta.vercel.app",
   googleBusinessUrl: "", // paste the Google Business Profile link when created
 
   // Social — TODO: SWAP / leave blank to hide
