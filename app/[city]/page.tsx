@@ -21,7 +21,9 @@ export async function generateMetadata({
   if (!city) return {};
   return {
     title: `Junk Removal in ${city.name}, MT`,
-    description: `${business.name} — fast, friendly junk removal & hauling in ${city.name}, Montana. ${business.tagline} Get a free quote today.`,
+    description:
+      city.metaDescription ??
+      `${business.name} — fast, friendly junk removal & hauling in ${city.name}, Montana. ${business.tagline} Get a free quote today.`,
     alternates: { canonical: `/${city.slug}` },
   };
 }
@@ -99,6 +101,28 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </div>
         </div>
       </Section>
+
+      {/* Common local jobs — city-specific content for local SEO */}
+      {city.commonJobs && (
+        <Section className="bg-cream">
+          <SectionHeading
+            eyebrow={`Popular in ${city.name}`}
+            title={`Common ${city.name} Junk Removal Jobs`}
+            subtitle="A few of the things we haul most often around here."
+          />
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {city.commonJobs.map((job) => (
+              <li
+                key={job}
+                className="flex items-start gap-3 rounded-2xl border border-slate/20 bg-white p-4 shadow-card"
+              >
+                <span aria-hidden className="font-display text-forest">✓</span>
+                <span className="text-sm font-medium text-ink">{job}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       {/* CTA */}
       <section className="bg-sand">
