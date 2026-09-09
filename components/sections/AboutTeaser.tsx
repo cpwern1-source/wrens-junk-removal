@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/Section";
-import { LinkButton } from "@/components/ui/Button";
 import { business } from "@/lib/brand";
 
 export function AboutTeaser() {
@@ -31,11 +30,6 @@ export function AboutTeaser() {
             Reliable, friendly, and on time. We treat your property like our own and leave the space
             cleaner than we found it.
           </p>
-          <div className="mt-7">
-            <LinkButton href="/about" variant="secondary" size="lg">
-              Meet {business.owner} →
-            </LinkButton>
-          </div>
         </div>
       </div>
     </Section>

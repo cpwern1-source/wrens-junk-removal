@@ -4,7 +4,7 @@ import { cities } from "@/lib/cities";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = business.url.replace(/\/$/, "");
-  const staticRoutes = ["", "/about", "/quote"].map((path) => ({
+  const staticRoutes = ["", "/quote"].map((path) => ({
     url: `${base}${path}`,
     changeFrequency: "monthly" as const,
     priority: path === "" ? 1 : 0.8,
