@@ -111,4 +111,9 @@ export const testimonials = [
     name: "Dale",
     location: "Big Sky, MT",
   },
+  {
+    quote: "Came day of and helped during a stressful move out.",
+    name: "Mike",
+    location: "Belgrade, MT",
+  },
 ];
