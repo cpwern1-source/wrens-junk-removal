@@ -9,7 +9,7 @@ export function Testimonials() {
         title="What Neighbors Say"
         subtitle="A few words from recent customers around the valley."
       />
-      <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <figure key={i} className="flex flex-col rounded-2xl border border-slate/20 bg-white p-7 shadow-card">
             <div className="text-sand" aria-hidden>
