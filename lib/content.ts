@@ -99,24 +99,16 @@ export const faqs = [
   },
 ];
 
-// TODO: SWAP — replace with real customer reviews once they come in.
+// Real customer reviews. Add more here as they come in.
 export const testimonials = [
   {
-    quote:
-      "Placeholder review — drop a real one here. Chase was on time, friendly, and cleared our whole garage in under an hour.",
-    name: "Customer Name",
+    quote: "Left my yard looking refreshed after removing scraps from an old deck.",
+    name: "Shannon",
     location: "Bozeman, MT",
   },
   {
-    quote:
-      "Placeholder review — swap in a real testimonial. Quick quote, fair price, and they handled a heavy old hot tub no problem.",
-    name: "Customer Name",
-    location: "Belgrade, MT",
-  },
-  {
-    quote:
-      "Placeholder review — add a genuine quote here. Booked it from my phone in two minutes and the junk was gone the next day.",
-    name: "Customer Name",
+    quote: "On time, quick and fair quote.",
+    name: "Dale",
     location: "Big Sky, MT",
   },
 ];
