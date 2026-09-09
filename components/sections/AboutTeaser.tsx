@@ -1,4 +1,5 @@
-import { Section, PhotoSlot } from "@/components/ui/Section";
+import Image from "next/image";
+import { Section } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
 import { business } from "@/lib/brand";
 
@@ -6,8 +7,13 @@ export function AboutTeaser() {
   return (
     <Section className="bg-cream">
       <div className="grid items-center gap-10 lg:grid-cols-2">
-        {/* TODO: SWAP — a real photo of Chase / the truck / a job site */}
-        <PhotoSlot label="Photo of Chase / the crew" ratio="aspect-[4/3]" />
+        <Image
+          src="/about-haul.webp"
+          alt="Wren's Junk Removal truck and trailer loaded with reclaimed barn wood on a job in the Gallatin Valley"
+          width={1600}
+          height={1200}
+          className="h-auto w-full rounded-2xl object-cover shadow-card"
+        />
 
         <div>
           <p className="mb-3 font-display text-sm font-semibold uppercase tracking-widest text-sand-dark">
