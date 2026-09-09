@@ -20,12 +20,11 @@ export function AboutTeaser() {
             Locally Owned
           </p>
           <h2 className="heading-xl text-3xl text-ink sm:text-4xl">
-            Born & Raised in the Gallatin Valley
+            Raised in the Gallatin Valley
           </h2>
           <p className="mt-4 text-lg text-ink-soft">
-            {business.name} is owned and operated by {business.owner}, a local who knows these
-            towns because he grew up in them. When you book with us, you&apos;re hiring a neighbor —
-            not a national chain.
+            {business.name} is owned and operated by {business.owner}. When you book with us,
+            you&apos;re hiring a neighbor — not a national chain.
           </p>
           <p className="mt-3 text-ink-soft">
             {/* TODO: SWAP — Wren's real story / hook goes here */}
